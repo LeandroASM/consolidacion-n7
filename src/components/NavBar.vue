@@ -8,7 +8,7 @@
       <template v-slot:append>
         <v-btn class="text-white" to="/" icon="mdi mdi-home"></v-btn>
 
-        <v-btn class="text-white" to="/admin" icon="mdi mdi-cog"></v-btn>
+        <v-btn class="text-white" to="/administracion" icon="mdi mdi-cog"></v-btn>
 
         
       </template>
