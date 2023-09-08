@@ -24,15 +24,11 @@
           </td>
           <td v-if="curso.completado == true" class="text-center"><p class="bg-info rounded-pill pa-2">Si</p></td>
           <td v-else class="text-center"><p class="bg-blue-grey-lighten-3 rounded-pill pa-2">No</p></td>
-          <td>{{ curso.fecha_registro }}</td>
+          <td class="text-center"><p class="bg-green rounded-pill pa-2">{{ curso.fecha_registro }}</p></td>
           <td>
             <div class="d-flex justify-space-around">
-              <v-icon color="yellow"
-                >mdi-pencil</v-icon
-              >
-              <v-icon color="red"
-                >mdi-delete</v-icon
-              >
+              <v-icon color="yellow" @click="editCourse(curso.id)">mdi-pencil</v-icon>
+              <v-icon color="red" @click="confirmDeleteCourse(curso.id)">mdi-delete</v-icon>
             </div>
           </td>
         </tr>
@@ -52,7 +48,15 @@ export default {
   },
   data: () => ({}),
   // computed: {},
-  // methods: {},
+  methods: {
+    editCourse(id){
+      this.$emit('editarCurso', id)
+      
+    },
+    confirmDeleteCourse(id){
+      this.$emit('borrarCurso', id)
+    }
+  },
   // watch: {},
   // components: {},
   // mixins: [],

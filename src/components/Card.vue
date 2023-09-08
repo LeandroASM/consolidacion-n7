@@ -11,7 +11,7 @@
           <v-timeline density="compact" align="start">
             <v-timeline-item :dot-color="colors[0]" size="x-small">
               <div class="mb-4">
-                <div class="font-weight-normal">Costo: {{ curso.costo }}</div>
+                <div class="font-weight-normal">Costo: ${{ curso.costo.toLocaleString('es', 'CL') }}</div>
                 <div>Duración: {{ curso.duracion }}</div>
               </div>
             </v-timeline-item>

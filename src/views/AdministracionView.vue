@@ -3,15 +3,25 @@
     <div>
       <v-row justify="center" class="mt-7">
         <v-col cols="auto">
-          <v-dialog transition="dialog-bottom-transition" max-width="700px">
-            <template v-slot:activator="{ props }">
-              <v-btn variant="tonal" class="items-center" v-bind="props"
-                >Agregar Curso</v-btn
-              >
-            </template>
+          <div>
+            <v-btn variant="tonal" class="items-center" @click="openDialog()"
+              >Agregar Curso</v-btn
+            >
+          </div>
+          <v-dialog
+            transition="dialog-bottom-transition"
+            max-width="700px"
+            v-model="dialog"
+          >
             <template v-slot>
               <v-card>
-                <Form></Form>
+                <FormEdit
+                  v-if="edit"
+                  :id="idEdit"
+                  @cursoEditado="cursoEditado"
+                  @cancelarEdit="cancelarEdit"
+                ></FormEdit>
+                <Form v-else @agregarCurso="addCourse" @cancelarAdd="cancelarAdd"></Form>
               </v-card>
             </template>
           </v-dialog>
@@ -19,31 +29,97 @@
       </v-row>
     </div>
     <div>
-      
-        <TablaCursos :listaCursos="cursos"></TablaCursos>
-      
+      <TablaCursos
+        :listaCursos="cursos"
+        @editarCurso="editCurso"
+        @borrarCurso="confirmDeleteCurso"
+      ></TablaCursos>
     </div>
   </div>
+  <v-row justify="center">
+    <v-dialog v-model="dialogDelete" persistent width="auto">
+      <v-card>
+        <v-card-title class="text-h5"> Confirmación </v-card-title>
+        <v-card-text>¿Desea eliminar este curso?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green-darken-1"
+            variant="text"
+            @click="dialogDelete = false"
+          >
+            Cancelar
+          </v-btn>
+          <v-btn color="green-darken-1" variant="text" @click="deleteCurso()">
+            Confirmo
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
 import Form from "@/components/AgregarCursoForm.vue";
-import TablaCursos from '@/components/TablaCursos.vue'
-import { mapState } from "vuex";
+import FormEdit from "@/components/EditarCursoForm.vue";
+import TablaCursos from "@/components/TablaCursos.vue";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Administracion-view",
   // props: {},
   data: function () {
-    return {};
+    return {
+      dialog: false,
+      dialogDelete: false,
+      id: null,
+      edit: false,
+      idEdit: null,
+    };
   },
   computed: {
-    ...mapState(['cursos']),
+    ...mapState(["cursos"]),
   },
-  //methods: {}
+  methods: {
+    ...mapActions(["createCourse", "deleteCourse", "editarCurso"]),
+    ...mapActions(["deleteCourse"]),
+    addCourse(nuevoCurso) {
+      this.createCourse(nuevoCurso);
+    },
+    openDialog() {
+      this.dialog = true;
+    },
+    confirmDeleteCurso(id) {
+      this.dialogDelete = true;
+      this.id = id;
+    },
+    deleteCurso() {
+      this.deleteCourse(this.id);
+      this.dialogDelete = false;
+    },
+    editCurso(id) {
+      this.dialog = true;
+      this.edit = true;
+      this.idEdit = id;
+    },
+    cursoEditado(nuevoCurso) {
+      this.editarCurso(nuevoCurso);
+      this.dialog = false;
+      this.idEdit = false;
+    },
+    cancelarEdit(){
+      this.dialog = false;
+      this.edit = false;
+      this.idEdit = null;
+    },
+    cancelarAdd(){
+      this.dialog = false;
+    }
+  },
   // watch: {},
   components: {
     Form,
     TablaCursos,
+    FormEdit,
   },
   // mixins: [],
   // filters: {},

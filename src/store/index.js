@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { v4 as uuid } from 'uuid'
 
 export default createStore({
   state: {
@@ -77,8 +78,37 @@ export default createStore({
       }
     ]
   },
-  getters: {},
-  mutations: {},
-  actions: {},
+  getters: {
+    getCursoById: state => id => {
+      return state.cursos.find(curso => curso.id == id)
+    }
+  },
+  mutations: {
+    CREATE_COURSE(state, curso){
+      curso.id = uuid()
+      state.cursos.push(curso)
+    },
+    DELETE_COURSE(state, id){
+      let index = state.cursos.findIndex(curso => curso.id == id)
+      state.cursos.splice(index, 1)
+    },
+    EDITAR_CURSO:(state,newCurso)=>{
+      console.log(newCurso)
+      let index = state.cursos.findIndex(prod=>prod.id == newCurso.id);
+      console.log(index)
+      state.cursos.splice(index,1,newCurso)
+    },
+  },
+  actions: {
+    createCourse({commit}, curso){
+      commit('CREATE_COURSE', curso)
+    },
+    deleteCourse({commit}, id){
+      commit('DELETE_COURSE', id)
+    },
+    editarCurso({commit},newCurso){
+      commit('EDITAR_CURSO',newCurso)
+    }
+  },
   modules: {},
 });

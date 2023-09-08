@@ -28,7 +28,7 @@
 
       <v-text-field
         v-model="duracion"
-        label="Inscritos en el curso"
+        label="Duración del curso"
         required
       ></v-text-field>
 
@@ -56,7 +56,7 @@
         Limpiar Formulario
       </v-btn>
 
-      <v-btn color="error" @click="hideForm()"> Cancelar </v-btn>
+      <v-btn color="error" @click="cancelar()"> Cancelar </v-btn>
     </v-form>
   </v-container>
 </template>
@@ -74,7 +74,7 @@ export default {
       duracion: "",
       registro: "",
       costo: undefined,
-      completado: "false",
+      completado: false,
       descripcion: "",
     };
   },
@@ -83,21 +83,23 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
-    addCurso(){
-            let nuevoCurso ={
-                nombre: this.nombre,
-                img: this.img,
-                cupos: parseInt(this.cupos),
-                duracion: this.duracion,
-                inscritos: parseInt(this.inscritos),
-                completado: this.completado,
-                fecha_registro: this.registro,
-                costo: parseInt(this.costo),
-                descripcion: this.descripcion,
-            }
-            this.$emit('agregarCurso',nuevoCurso)
-        },
-
+    addCurso() {
+      let nuevoCurso = {
+        nombre: this.nombre,
+        img: this.img,
+        cupos: parseInt(this.cupos),
+        duracion: this.duracion,
+        inscritos: parseInt(this.inscritos),
+        completado: this.completado,
+        fecha_registro: this.registro,
+        costo: parseInt(this.costo),
+        descripcion: this.descripcion,
+      };
+      this.$emit("agregarCurso", nuevoCurso);
+    },
+    cancelar(){
+      this.$emit('cancelarAdd')
+    }
   },
   // watch: {},
   // components: {},
