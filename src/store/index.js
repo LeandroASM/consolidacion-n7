@@ -79,7 +79,23 @@ export default createStore({
     ]
   },
   getters: {
-    getCursoById: state => id => {
+    alumnosPermitidos: function(state){ 
+      let totalCupos =state.cursos.reduce((acumulador, cursos)=>acumulador+cursos.cupos,0)
+      return totalCupos
+    },
+    alumnosInscritos: function(state){
+      let totalAlumnosInscritos = state.cursos.reduce((total,cursos)=>total+cursos.inscritos,0)
+      return totalAlumnosInscritos
+    },
+    cursosTerminados: function(state){
+      let terminados = state.cursos.filter(curso=>curso.completado == true)
+      return terminados.length
+    },
+    totalCursos: function(state){
+      let activos = state.cursos.length
+      return activos  
+    },
+    getCursoById: (state) => (id) => {
       return state.cursos.find(curso => curso.id == id)
     }
   },
@@ -92,10 +108,8 @@ export default createStore({
       let index = state.cursos.findIndex(curso => curso.id == id)
       state.cursos.splice(index, 1)
     },
-    EDITAR_CURSO:(state,newCurso)=>{
-      console.log(newCurso)
+    EDITAR_CURSO:(state,newCurso)=>{    
       let index = state.cursos.findIndex(prod=>prod.id == newCurso.id);
-      console.log(index)
       state.cursos.splice(index,1,newCurso)
     },
   },

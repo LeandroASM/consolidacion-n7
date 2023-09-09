@@ -1,7 +1,6 @@
 <template>
     
     <v-app-bar color="#8E24AA">
-      
 
       <v-app-bar-title class="text-white">Cursos AlfaWeb</v-app-bar-title>
       

@@ -139,7 +139,6 @@ export default {
         
         
       };
-      console.log(this.completado);
       
       this.$emit("cursoEditado", cursoEditado);
     },
